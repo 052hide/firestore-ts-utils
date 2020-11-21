@@ -1,5 +1,6 @@
 import {
     FirebaseFirestore,
+    GetOptions,
     CollectionReference,
     Query,
     QueryDocumentSnapshot,
@@ -79,8 +80,9 @@ export const find = async <T>(
     collectionId: CollectionReference['id'],
     documentId: DocumentReference['id'],
     setData: (doc: DocumentSnapshot | QueryDocumentSnapshot, data?: DocumentData) => T | null,
+    source: GetOptions['source'] = 'default',
 ): Promise<T> => {
-    const doc = await $fs.collection(collectionId).doc(documentId).get()
+    const doc = await $fs.collection(collectionId).doc(documentId).get({ source })
     const res = setData(doc, doc.data())
     if (!res) {
         throw new Error('no data')
@@ -93,6 +95,7 @@ export const findByConditions = async <T>(
     collectionId: CollectionReference['id'],
     conditions: FirestoreType.Where[],
     setData: (doc: DocumentSnapshot | QueryDocumentSnapshot, data?: DocumentData) => T | null,
+    source: GetOptions['source'] = 'default',
     orderBys?: FirestoreType.OrderBy[],
     limit?: number,
     fetchRange?: FirestoreType.Range,
@@ -101,7 +104,7 @@ export const findByConditions = async <T>(
     query = _getFindAllQuery(query, orderBys, limit)
     query = _getConditionQuery(query, conditions)
 
-    const collection = await query.get()
+    const collection = await query.get({ source })
     const res: T[] = []
 
     const startIndex: number = fetchRange?.startIndex || 0
