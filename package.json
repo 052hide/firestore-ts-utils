@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/052hide/firestore-ts-utils#readme",
   "dependencies": {
-    "firebase": "^8.0.2"
+    "firebase": "^9.1.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.7.0",
